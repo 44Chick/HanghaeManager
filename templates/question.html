@@ -105,7 +105,7 @@
                   url: '/question/question',
                   data: { question_title_give:title, question_detail_give:detail, main_ability_give:main},
                   success: function (response) {
-                      if(response['success'] === 'success'){
+                      if(response['success'] === true){
                           alert(response['message'])
                           window.location.href = "/";
                       }else{

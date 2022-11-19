@@ -48,7 +48,7 @@ def question_post():
 
         db.question.insert_one(doc)
 
-        return jsonify({"success": "success", "message": "게시글 등록 완료!"})
+        return jsonify({"success": True, "message": "게시글 등록 완료!"})
 
     else:
-        return jsonify({"success": "fail", 'message': "다시 시도해주세요."})
+        return jsonify({"success": False, 'message': "다시 시도해주세요."})
