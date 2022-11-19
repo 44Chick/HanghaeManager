@@ -102,7 +102,7 @@
             
               $.ajax({
                   type: 'POST',
-                  url: '/question/question',
+                  url: '/question',
                   data: { question_title_give:title, question_detail_give:detail, main_ability_give:main},
                   success: function (response) {
                       if(response['success'] === true){

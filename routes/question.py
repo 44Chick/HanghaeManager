@@ -14,7 +14,7 @@ question = Blueprint("question", __name__, url_prefix="/question")
 def question_home():
     return render_template('question.html')
 
-@question.route("/question", methods=["POST"])
+@question.route("/", methods=["POST"])
 def question_post():
 
     user_check = jwt_check.user_check()
