@@ -50,7 +50,6 @@ def mypage_data():
         month = today.month
 
         last_day = calendar.monthrange(year, month)[1]
-        print(last_day)
 
         month_first_day = datetime.datetime(year, month, 1)
         month_last_day = datetime.datetime(year, month, last_day)
@@ -63,9 +62,6 @@ def mypage_data():
         for i in til_list:
             til_date_list.append(i['til_date'].day)
 
-        print(til_date_list)
-        print(question_list)
-        print(til_list)
         return jsonify({'question_list': question_list, 'til_date_list': til_date_list}), 200
 
     else:
@@ -83,8 +79,6 @@ def mypage_til_save():
 
         til_url = request.form['til_url']
         til_count = request.form['til_count']
-        print(til_url)
-        print(til_count)
 
         date = common_function.now_time('sametime')
         today_til = db.til.find_one({'user_id': user_id, 'til_date': date})
@@ -104,61 +98,6 @@ def mypage_til_save():
 
         else:
             return jsonify({"message": "하루에 한번만 가능합니다."}), 200
-
-    else:
-        return render_template('login.html')
-
-
-# 게시글 수정
-@mypage.route('/modification', methods=['POST'])
-def post_update():
-
-    user_check = jwt_check.user_check()
-
-    if user_check['result'] != "fail":
-        user_id = user_check['user_id']
-
-        question_id = int(request.form['question_id'])
-        question_detail = request.form['question_detail']
-
-        # user_id와 question_id에 저장된 user_id가 맞는지 확인 하기 위한 find
-        post = db.question.find_one({'question_id': question_id}, {'_id': False})
-
-        # 같다면 update
-        if post['user_id'] == user_id:
-            db.question.update_one({'question_id': question_id}, {'$set': {'question_detail': question_detail}})
-            return jsonify({"message": "success"}), 200
-
-        else:
-            # 같지 않다면 fail
-            return jsonify({"message": "fail"}), 203
-
-    else:
-        return render_template('login.html')
-
-
-# 게시글 삭제
-@mypage.route('/deletion', methods=['POST'])
-def post_delete():
-    user_check = jwt_check.user_check()
-    print(user_check['result'])
-    if user_check['result'] != "fail":
-        user_id = user_check['user_id']
-
-        question_id = int(request.form['question_id'])
-
-        # user_id와 question_id에 저장된 user_id가 맞는지 확인 하기 위한 find
-        post = db.question.find_one({'question_id': question_id}, {'_id': False})
-        print(post)
-        # 같다면 delete
-        if post['user_id'] == user_id:
-            db.question.delete_one({'question_id': question_id})
-            # question의 answer들도 삭제하는 로직 추가 구현 필요
-            return jsonify({"message": "success"}), 200
-
-        else:
-            # 같지 않다면 fail
-            return jsonify({"message": "fail"}), 203
 
     else:
         return render_template('login.html')
