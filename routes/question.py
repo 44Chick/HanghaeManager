@@ -14,7 +14,7 @@ question = Blueprint("question", __name__, url_prefix="/question")
 def question_home():
     return render_template('question.html')
 
-@question.route("/question", methods=["POST"])
+@question.route("/", methods=["POST"])
 def question_post():
 
     user_check = jwt_check.user_check()
@@ -48,7 +48,7 @@ def question_post():
 
         db.question.insert_one(doc)
 
-        return jsonify({"success": "success", "message": "게시글 등록 완료!"})
+        return jsonify({"success": True, "message": "게시글 등록 완료!"})
 
     else:
-        return jsonify({"success": "fail", 'message': "다시 시도해주세요."})
+        return jsonify({"success": False, 'message': "다시 시도해주세요."})
